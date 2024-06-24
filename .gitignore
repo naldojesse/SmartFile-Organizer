@@ -3,3 +3,5 @@ __pycache__/
 *.pyc
 classifier/vectorizer.pkl
 classifier/classifier.pkl
+venv/
+docs/ollama/

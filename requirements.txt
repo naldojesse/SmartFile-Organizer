@@ -8,3 +8,4 @@ transformers
 scikit-learn
 joblib
 python-dotenv
+torch 
