@@ -1,0 +1,10 @@
+watchdog
+spacy
+PyPDF2
+python-docx
+pandas
+beautifulsoup4
+transformers
+scikit-learn
+joblib
+python-dotenv
