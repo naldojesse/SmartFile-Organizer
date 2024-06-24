@@ -42,9 +42,12 @@ def extract_text_from_docx(docx_path, num_paragraphs=5):
         str: The extracted text.
     """
     logging.info(f"Extracting text from DOCX: {docx_path}")
-    doc = docx.Document(docx_path)
-    text = "\n".join([para.text for para in doc.paragraphs[:num_paragraphs]])
-    return text
+    try:
+        doc = docx.Document(docx_path)
+        text = "\n".join([para.text for para in doc.paragraphs[:num_paragraphs]])
+        return text
+    except docx.opc.exceptions.PackageNotFoundError:
+        raise FileNotFoundError(f"File not found: {docx_path}")
 
 def extract_text_from_txt(txt_path, num_lines=100):
     """

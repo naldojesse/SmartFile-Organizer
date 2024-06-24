@@ -9,3 +9,5 @@ scikit-learn
 joblib
 python-dotenv
 torch 
+pytest
+pytest-mock
