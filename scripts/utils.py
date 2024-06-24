@@ -13,6 +13,16 @@ nlp = spacy.load("en_core_web_sm")
 OLLAMA_API_URL = "http://localhost:11434/api"
 
 def extract_text_from_pdf(pdf_path, num_pages=1):
+    """
+    Extract text from a PDF file.
+
+    Args:
+        pdf_path (str): The path of the PDF file.
+        num_pages (int): The number of pages to extract text from.
+
+    Returns:
+        str: The extracted text.
+    """
     logging.info(f"Extracting text from PDF: {pdf_path}")
     reader = PyPDF2.PdfReader(pdf_path)
     text = ""
@@ -21,24 +31,64 @@ def extract_text_from_pdf(pdf_path, num_pages=1):
     return text
 
 def extract_text_from_docx(docx_path, num_paragraphs=5):
+    """
+    Extract text from a DOCX file.
+
+    Args:
+        docx_path (str): The path of the DOCX file.
+        num_paragraphs (int): The number of paragraphs to extract text from.
+
+    Returns:
+        str: The extracted text.
+    """
     logging.info(f"Extracting text from DOCX: {docx_path}")
     doc = docx.Document(docx_path)
     text = "\n".join([para.text for para in doc.paragraphs[:num_paragraphs]])
     return text
 
 def extract_text_from_txt(txt_path, num_lines=100):
+    """
+    Extract text from a TXT file.
+
+    Args:
+        txt_path (str): The path of the TXT file.
+        num_lines (int): The number of lines to extract text from.
+
+    Returns:
+        str: The extracted text.
+    """
     logging.info(f"Extracting text from TXT: {txt_path}")
     with open(txt_path, "r") as file:
         lines = file.readlines()
     return "".join(lines[:num_lines])
 
 def extract_text_from_csv(csv_path, num_rows=10):
+    """
+    Extract text from a CSV file.
+
+    Args:
+        csv_path (str): The path of the CSV file.
+        num_rows (int): The number of rows to extract text from.
+
+    Returns:
+        str: The extracted text.
+    """
     logging.info(f"Extracting text from CSV: {csv_path}")
     df = pd.read_csv(csv_path, nrows=num_rows)
     text = df.to_string()
     return text
 
 def extract_text_from_html(html_path, num_lines=100):
+    """
+    Extract text from an HTML file.
+
+    Args:
+        html_path (str): The path of the HTML file.
+        num_lines (int): The number of lines to extract text from.
+
+    Returns:
+        str: The extracted text.
+    """
     logging.info(f"Extracting text from HTML: {html_path}")
     with open(html_path, "r") as file:
         soup = BeautifulSoup(file, "html.parser")
@@ -46,6 +96,15 @@ def extract_text_from_html(html_path, num_lines=100):
     return text
 
 def analyze_text(text):
+    """
+    Analyze text using NLP to extract keywords.
+
+    Args:
+        text (str): The text to analyze.
+
+    Returns:
+        list: A list of unique keywords.
+    """
     logging.info("Analyzing text")
     doc = nlp(text)
     keywords = [chunk.text for chunk in doc.noun_chunks]
@@ -53,6 +112,15 @@ def analyze_text(text):
     return unique_keywords
 
 def summarize_text(prompt):
+    """
+    Summarize text using an AI model.
+
+    Args:
+        prompt (str): The text to summarize.
+
+    Returns:
+        str: The summarized text.
+    """
     logging.info("Summarizing text")
     payload = {
         "model": "llama3",
@@ -74,6 +142,15 @@ def summarize_text(prompt):
         return "Error: Unable to summarize text"
 
 def classify_text(text):
+    """
+    Classify text using an AI model.
+
+    Args:
+        text (str): The text to classify.
+
+    Returns:
+        str: The classification label.
+    """
     logging.info("Classifying text")
     payload = {
         "model": "llama3",

@@ -11,6 +11,7 @@ import logging
 # Load environment variables
 load_dotenv()
 
+# Define the file organization schema based on environment variables
 file_organization_schema = {
     "documents": {
         "work": os.getenv("WORK_PATH"),
@@ -28,11 +29,25 @@ file_organization_schema = {
 }
 
 def create_directory_if_not_exists(directory_path):
+    """
+    Create a directory if it does not already exist.
+
+    Args:
+        directory_path (str): The path of the directory to create.
+    """
     if not os.path.exists(directory_path):
         os.makedirs(directory_path)
         print(f"Created directory: {directory_path}")
 
 def move_file_based_on_tags(file_path, tags, schema):
+    """
+    Move a file to a destination directory based on its tags.
+
+    Args:
+        file_path (str): The path of the file to move.
+        tags (list): A list of tags associated with the file.
+        schema (dict): The file organization schema.
+    """
     destination = None
     text = " ".join(tags)
     category_label = classify_text(text)
@@ -62,13 +77,30 @@ def move_file_based_on_tags(file_path, tags, schema):
         print(f"Error moving {file_path} to {destination}: {e}")
 
 def analyze_existing_files(path, event_handler):
+    """
+    Analyze existing files in a directory.
+
+    Args:
+        path (str): The path of the directory to analyze.
+        event_handler (FileSystemEventHandler): The event handler to process files.
+    """
     for filename in os.listdir(path):
         file_path = os.path.join(path, filename)
         if os.path.isfile(file_path):
             event_handler.on_created(None, file_path)
 
 class FileHandler(FileSystemEventHandler):
+    """
+    Custom file event handler to process files when they are created.
+    """
     def on_created(self, event, file_path=None):
+        """
+        Handle the event when a file is created.
+
+        Args:
+            event (FileSystemEvent): The file system event.
+            file_path (str, optional): The path of the file to process.
+        """
         if event is None:
             # Handle the case when analyzing existing files
             logging.info(f"Analyzing existing file: {file_path}")
@@ -81,6 +113,12 @@ class FileHandler(FileSystemEventHandler):
                 return
 
     def process_file(self, file_path):
+        """
+        Process a file by extracting text, analyzing it, and moving it based on tags.
+
+        Args:
+            file_path (str): The path of the file to process.
+        """
         logging.info(f"Processing file: {file_path}")
         ext = Path(file_path).suffix.lower()
         text = ""
